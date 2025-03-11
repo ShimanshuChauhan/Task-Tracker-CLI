@@ -31,7 +31,18 @@ export function getAllTasks(): Task[] {
 
 export function addTask(description: string): void {
   try {
-    const taskIdData = JSON.parse(fs.readFileSync(path.join(__dirname, "id.json"), "utf-8"));
+    const dataFilePath = path.join(__dirname, "data.json");
+    const idFilePath = path.join(__dirname, "id.json");
+
+    if (!fs.existsSync(dataFilePath)) {
+      fs.writeFileSync(dataFilePath, JSON.stringify({ tasks: [] }, null, 2));
+    }
+
+    if (!fs.existsSync(idFilePath)) {
+      fs.writeFileSync(idFilePath, JSON.stringify({ id: 0 }, null, 2));
+    }
+
+    const taskIdData = JSON.parse(fs.readFileSync(idFilePath, "utf-8"));
     const taskId: number = taskIdData.id;
     const tasks = getAllTasks();
     const newTask: Task = {
@@ -42,11 +53,29 @@ export function addTask(description: string): void {
       updatedAt: new Date(),
     };
     const updatedTasks = [...tasks, newTask];
-    const filePath = path.join(__dirname, "data.json");
-    fs.writeFileSync(filePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
-    fs.writeFileSync(path.join(__dirname, "id.json"), JSON.stringify({ id: taskId + 1 }, null, 2));
+    fs.writeFileSync(dataFilePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
+    fs.writeFileSync(idFilePath, JSON.stringify({ id: taskId + 1 }, null, 2));
   } catch (err: any) {
     console.error(kleur.red(err.message));
+  }
+}
+
+export function deleteTask(taskId: number): boolean {
+  try {
+    const tasks = getAllTasks();
+    const updatedTasks = tasks.filter((task) => task.id !== taskId);
+    if (updatedTasks.length === tasks.length) {
+      console.log(kleur.red("Task not found"));
+      return false;
+    }
+
+    //data.json will surely exist as getAllTasks() is called before this function
+    const filePath = path.join(__dirname, "data.json");
+    fs.writeFileSync(filePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
+    return true;
+  } catch (err: any) {
+    console.error(kleur.red(err.message));
+    return false;
   }
 }
 

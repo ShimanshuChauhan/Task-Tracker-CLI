@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import kleur from "kleur";
-
-import { getAllTasks, addTask } from "./controller";
+import readline from "readline";
+import { getAllTasks, addTask, deleteTask } from "./controller";
 
 const program = new Command();
 
@@ -28,6 +28,32 @@ program.command("list")
     const tasks = getAllTasks();
     console.log(tasks);
   })
+
+program.command("delete")
+  .description("Delete a task")
+  .argument("<taskId>", "Task ID")
+  .action((taskId: string) => {
+    //Prompt the user for conformation to delete
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question(kleur.red(`Are you sure you want to delete ${taskId} task? (yes/no): `), (answer) => {
+      if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "y") {
+        if (deleteTask(parseInt(taskId)))
+          console.log(kleur.green("Task deleted successfully"));
+      }
+      else if (answer.toLowerCase() === "no" || answer.toLowerCase() === "n") {
+        console.log(kleur.yellow("Task deletion aborted"));
+      } else {
+        console.log(kleur.red("Invalid input"));
+        console.log(kleur.yellow("Task deletion aborted"));
+      }
+      rl.close();
+      return;
+    });
+  });
 
 
 program.exitOverride((err) => {
