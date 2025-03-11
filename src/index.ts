@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import kleur from "kleur";
 import readline from "readline";
-import { getAllTasks, addTask, deleteTask } from "./controller";
+import { getAllTasks, addTask, deleteTask, updateTaskDescription } from "./controller";
 
 const program = new Command();
 
@@ -12,7 +12,7 @@ program
 
 program.command("add")
   .description("Add a new task")
-  .argument("<taskName>", "Task name")
+  .argument("<taskName>", "Task description")
   .action((taskName: string) => {
     try {
       addTask(taskName);
@@ -31,7 +31,7 @@ program.command("list")
 
 program.command("delete")
   .description("Delete a task")
-  .argument("<taskId>", "Task ID")
+  .argument("<taskId>", "ID of the task to be deleted")
   .action((taskId: string) => {
     //Prompt the user for conformation to delete
     const rl = readline.createInterface({
@@ -55,8 +55,18 @@ program.command("delete")
     });
   });
 
+program.command("update")
+  .description("Update a task")
+  .argument("<taskId>", "ID of the task to be updated")
+  .argument("<updatedDescription>", "New description for the task")
+  .action((taskId: string, updatedDescription: string) => {
+    if (updateTaskDescription(parseInt(taskId), updatedDescription)) {
+      console.log(kleur.green("Task updated successfully"));
+    }
+  });
 
-program.exitOverride((err) => {
+
+program.exitOverride((err: any) => {
   console.error(kleur.red(`Error: ${err.message}`));
   process.exit(1);
 });

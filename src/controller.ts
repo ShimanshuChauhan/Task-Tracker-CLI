@@ -34,10 +34,10 @@ export function addTask(description: string): void {
     const dataFilePath = path.join(__dirname, "data.json");
     const idFilePath = path.join(__dirname, "id.json");
 
+    //Create data.json and id.json if they don't exist
     if (!fs.existsSync(dataFilePath)) {
       fs.writeFileSync(dataFilePath, JSON.stringify({ tasks: [] }, null, 2));
     }
-
     if (!fs.existsSync(idFilePath)) {
       fs.writeFileSync(idFilePath, JSON.stringify({ id: 0 }, null, 2));
     }
@@ -69,6 +69,32 @@ export function deleteTask(taskId: number): boolean {
       return false;
     }
 
+    //data.json will surely exist as getAllTasks() is called before this function
+    const filePath = path.join(__dirname, "data.json");
+    fs.writeFileSync(filePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
+    return true;
+  } catch (err: any) {
+    console.error(kleur.red(err.message));
+    return false;
+  }
+}
+
+
+export function updateTaskDescription(taskId: number, description: string): boolean {
+  try {
+    const tasks = getAllTasks();
+    const taskToUpdate = tasks.filter((task) => task.id === taskId);
+    if (taskToUpdate.length === 0) {
+      console.log(kleur.red("Task not found"));
+      return false;
+    }
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        task.description = description;
+        task.updatedAt = new Date();
+      }
+      return task;
+    })
     //data.json will surely exist as getAllTasks() is called before this function
     const filePath = path.join(__dirname, "data.json");
     fs.writeFileSync(filePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
