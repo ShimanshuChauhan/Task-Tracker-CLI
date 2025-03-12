@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import kleur from "kleur";
 import readline from "readline";
-import { getAllTasks, addTask, deleteTask, updateTaskDescription, updateTaskStatus } from "./controller";
+import { getAllTasks, addTask, deleteTask, updateTaskDescription, updateTaskStatus, getTasksByStatus, TaskStatus } from "./controller";
 
 const program = new Command();
 
@@ -24,10 +24,20 @@ program.command("add")
 
 program.command("list")
   .description("List all tasks")
-  .action(() => {
-    const tasks = getAllTasks();
-    console.log(tasks);
-  })
+  .argument("[status]", "Task status (optional: todo, in-progress, done)")
+  .action((status?: string) => {
+    if (status) {
+      if (!Object.values(TaskStatus).includes(status as TaskStatus)) {
+        console.log(kleur.red("Invalid status. Please use one of the following: todo, in-progress, done"));
+        return;
+      }
+      const tasks = getTasksByStatus(status as TaskStatus);
+      console.log(tasks);
+    } else {
+      const tasks = getAllTasks();
+      console.log(tasks);
+    }
+  });
 
 program.command("delete")
   .description("Delete a task")

@@ -2,7 +2,7 @@ import kleur from "kleur";
 import fs from "fs";
 import path from "path";
 
-enum TaskStatus {
+export enum TaskStatus {
   TODO = "todo",
   IN_PROGRESS = "in-progress",
   DONE = "done",
@@ -133,5 +133,10 @@ export function updateTaskStatus(taskId: number, taskStatus: string): boolean {
     console.log(kleur.red(err.message));
     return false;
   }
+}
+
+export function getTasksByStatus(status: string): Task[] {
+  const tasks = getAllTasks();
+  return tasks.filter((task) => task.status === status);
 }
 
