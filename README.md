@@ -12,8 +12,14 @@ This CLI tool allows users to manage tasks with features like adding, listing, u
 ## Installation
 ### Prerequisites
 Ensure you have Node.js installed on your system.
-  1. Clone the repository: ```git clone https://github.com/ShimanshuChauhan/Task-Tracker-CLI.git```
-  2. Install dependencies: ```npm install```
+  1. Clone the repository: 
+     ``` 
+     git clone https://github.com/ShimanshuChauhan/Task-Tracker-CLI.git 
+     ```
+  2. Install dependencies: 
+     ```
+     npm install
+     ```
    
 ## Usage
 ### Run the CLI 
