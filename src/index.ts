@@ -1,3 +1,14 @@
+/**
+ * Task manager CLI
+ * 
+ * A simple CLI to manage tasks
+ * Supports the following commands:
+ * 1. add - Add a new task
+ * 2. list - List all tasks
+ * 3. delete - Delete a task
+ * 4. update - Update a task
+ */
+
 import { Command } from "commander";
 import kleur from "kleur";
 import readline from "readline";
@@ -5,10 +16,19 @@ import { getAllTasks, addTask, deleteTask, updateTaskDescription, updateTaskStat
 
 const program = new Command();
 
+/** 
+ * Command to add a new task
+ * @argument {string} taskName - Task description
+*/
 program
   .version("0.0.1")
   .name("Task manager")
   .description("A task management CLI");
+
+/**
+ * Command to list all tasks
+ * @argument {string} taskName - Description of the task
+ */
 
 program.command("add")
   .description("Add a new task")
@@ -21,6 +41,11 @@ program.command("add")
       console.error(kleur.red(err.message));
     }
   });
+
+/**
+ * Command to list all tasks
+ * @argument {string} [status] - Task status (optional filter for task status: todo, in-progress, done)
+ */
 
 program.command("list")
   .description("List all tasks")
@@ -38,6 +63,11 @@ program.command("list")
       console.log(tasks);
     }
   });
+
+/**
+ * Command to delete a task
+ * @argument {string} taskId - ID of the task to be deleted
+ */
 
 program.command("delete")
   .description("Delete a task")
@@ -65,6 +95,12 @@ program.command("delete")
     });
   });
 
+/**
+ * Command to update a task
+ * @argument {string} taskId - ID of the task to be updated
+ * @argument {string} updatedDescription - New description for the task
+ */
+
 program.command("update")
   .description("Update a task")
   .argument("<taskId>", "ID of the task to be updated")
@@ -75,18 +111,28 @@ program.command("update")
     }
   });
 
+/**
+ * Command to mark a task as in-progress
+ * @argument {string} taskId - ID of the task to be marked as in-progress
+ */
+
 program.command("mark-in-progress")
   .description("Mark task in progress")
-  .argument("<taskId")
+  .argument("<taskId>", "ID of the task to be marked as in-progress")
   .action((taskId: string) => {
     if (updateTaskStatus(parseInt(taskId), "in-progress")) {
       console.log(kleur.green(`Task ${taskId} marked as in-progress`));
     }
   });
 
+
+/**
+ * Command to mark a task as done
+ * @argument {string} taskId - ID of the task to be marked as done
+ */
 program.command("mark-done")
   .description("Mark task done")
-  .argument("<taskId")
+  .argument("<taskId", "ID of the task to be marked as done")
   .action((taskId: string) => {
     if (updateTaskStatus(parseInt(taskId), "done")) {
       console.log(kleur.green(`Task ${taskId} marked as done`));
