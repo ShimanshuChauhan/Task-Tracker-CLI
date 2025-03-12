@@ -23,12 +23,12 @@ Ensure you have Node.js installed on your system.
 
 | Command              | Description                                      | Arguments                                      | Example Usage                         |
 |----------------------|--------------------------------------------------|-----------------------------------------------|---------------------------------------|
-| `add`               | Add a new task                                   | `<taskName>` (Task description)              | `task-manager add "Buy groceries"`   |
-| `list`              | List all tasks                                   | `[status]` (Optional: `todo`, `in-progress`, `done`) | `task-manager list done`            |
-| `delete`            | Delete a task                                   | `<taskId>` (ID of the task)                   | `task-manager delete 2`              |
-| `update`            | Update task description                         | `<taskId>`, `<updatedDescription>`           | `task-manager update 3 "New title"`  |
-| `mark-in-progress`  | Mark a task as in progress                      | `<taskId>`                                    | `task-manager mark-in-progress 4`    |
-| `mark-done`         | Mark a task as done                             | `<taskId>`                                    | `task-manager mark-done 5`           |
+| `add`               | Add a new task                                   | `<taskName>` (Task description)              | `task-cli add "Buy groceries"`   |
+| `list`              | List all tasks                                   | `[status]` (Optional: `todo`, `in-progress`, `done`) | `task-cli list done`            |
+| `delete`            | Delete a task                                   | `<taskId>` (ID of the task)                   | `task-cli delete 2`              |
+| `update`            | Update task description                         | `<taskId>`, `<updatedDescription>`           | `task-cli update 3 "New title"`  |
+| `mark-in-progress`  | Mark a task as in progress                      | `<taskId>`                                    | `task-cli mark-in-progress 4`    |
+| `mark-done`         | Mark a task as done                             | `<taskId>`                                    | `task-cli mark-done 5`           |
 
 ## Project Structure
 ```
