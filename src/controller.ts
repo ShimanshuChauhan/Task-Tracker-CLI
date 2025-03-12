@@ -105,3 +105,33 @@ export function updateTaskDescription(taskId: number, description: string): bool
   }
 }
 
+export function updateTaskStatus(taskId: number, taskStatus: string): boolean {
+  try {
+    const tasks = getAllTasks();
+    let updated = false;
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        if (taskStatus === "in-progress") {
+          task.status = TaskStatus.IN_PROGRESS;
+        }
+        if (taskStatus === "done") {
+          task.status = TaskStatus.DONE;
+        }
+        updated = true;
+      }
+      return task
+    })
+
+    if (!updated) {
+      console.log(kleur.red("Task not found"));
+      return false;
+    }
+    const filePath = path.join(__dirname, "data.json");
+    fs.writeFileSync(filePath, JSON.stringify({ tasks: updatedTasks }, null, 2));
+    return true;
+  } catch (err: any) {
+    console.log(kleur.red(err.message));
+    return false;
+  }
+}
+

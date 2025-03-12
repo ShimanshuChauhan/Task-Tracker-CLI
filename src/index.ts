@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import kleur from "kleur";
 import readline from "readline";
-import { getAllTasks, addTask, deleteTask, updateTaskDescription } from "./controller";
+import { getAllTasks, addTask, deleteTask, updateTaskDescription, updateTaskStatus } from "./controller";
 
 const program = new Command();
 
@@ -65,10 +65,22 @@ program.command("update")
     }
   });
 
+program.command("mark-in-progress")
+  .description("Mark task in progress")
+  .argument("<taskId")
+  .action((taskId: string) => {
+    if (updateTaskStatus(parseInt(taskId), "in-progress")) {
+      console.log(kleur.green(`Task ${taskId} marked as in-progress`));
+    }
+  });
 
-program.exitOverride((err: any) => {
-  console.error(kleur.red(`Error: ${err.message}`));
-  process.exit(1);
-});
+program.command("mark-done")
+  .description("Mark task done")
+  .argument("<taskId")
+  .action((taskId: string) => {
+    if (updateTaskStatus(parseInt(taskId), "done")) {
+      console.log(kleur.green(`Task ${taskId} marked as done`));
+    }
+  });
 
 program.parse();
