@@ -2,11 +2,26 @@ import kleur from "kleur";
 import fs from "fs";
 import path from "path";
 
+/**
+ * Enum representating the possible status of a task
+ * @readonly
+ * @enum {string}
+ */
 export enum TaskStatus {
   TODO = "todo",
   IN_PROGRESS = "in-progress",
   DONE = "done",
 }
+
+/**
+ * Interface representing a task
+ * @interface
+ * @property {number} id - The id of the task
+ * @property {string} description - The description of the task
+ * @property {TaskStatus} status - The status of the task
+ * @property {Date} createdAt - The date the task was created
+ * @property {Date} updatedAt - The date the task was last updated
+ */
 
 interface Task {
   id: number;
@@ -15,6 +30,11 @@ interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
+/**
+ *Retrives all tasks from data file (data.json)
+ * @returns {Task[]} - An array of tasks
+ */
 
 export function getAllTasks(): Task[] {
   try {
@@ -28,7 +48,11 @@ export function getAllTasks(): Task[] {
   }
 }
 
-
+/**
+ * Adds a task to the data file (data.json)
+ * @param {string} description - The description of the task
+ * @returns {void}
+ */
 export function addTask(description: string): void {
   try {
     const dataFilePath = path.join(__dirname, "data.json");
@@ -60,6 +84,12 @@ export function addTask(description: string): void {
   }
 }
 
+/**
+ * Deletes a task from the data file (data.json) by it's id
+ * @param taskId - The id of the task to be deleted
+ * @returns {boolean} True if the task was deleted successfully, false otherwise
+ */
+
 export function deleteTask(taskId: number): boolean {
   try {
     const tasks = getAllTasks();
@@ -79,6 +109,12 @@ export function deleteTask(taskId: number): boolean {
   }
 }
 
+/**
+ * Updates the description of a task in the data file (data.json) by it's id
+ * @param {number} taskId 
+ * @param {string} description 
+ * @returns {boolean} True if the task was updated successfully, false otherwise
+ */
 
 export function updateTaskDescription(taskId: number, description: string): boolean {
   try {
@@ -104,6 +140,13 @@ export function updateTaskDescription(taskId: number, description: string): bool
     return false;
   }
 }
+
+/**
+ * Updates the status of a task in the data file (data.json) by it's id
+ * @param {number} taskId - The ID of the task to be updated
+ * @param {string} taskStatus - The new status of the task
+ * @returns {boolean} True if the task was updated successfully, false otherwise
+ */
 
 export function updateTaskStatus(taskId: number, taskStatus: string): boolean {
   try {
@@ -134,6 +177,12 @@ export function updateTaskStatus(taskId: number, taskStatus: string): boolean {
     return false;
   }
 }
+
+/**
+ * Retrives all tasks filtered by status
+ * @param {string} status - The status of the tasks to be retrieved
+ * @returns {Task[]} - An array of tasks
+ */
 
 export function getTasksByStatus(status: string): Task[] {
   const tasks = getAllTasks();
